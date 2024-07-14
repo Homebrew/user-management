@@ -51,3 +51,8 @@ import {
   to       = module.github.github_team.maintainers[each.key]
   id       = replace(each.key, "_", "-")
 }
+
+import {
+  to = module.dnsimple.dnsimple_contact.ocf
+  id = 52414
+}
