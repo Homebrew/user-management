@@ -20,6 +20,10 @@ locals {
   unmanagable_members = ["p-linnane", "issyl0", "colindean", "MikeMcQuaid", "BrewSponsorsBot"]
 }
 
+module "dnsimple" {
+  source = "./dnsimple"
+}
+
 module "github" {
   source              = "./github"
   teams               = var.teams
