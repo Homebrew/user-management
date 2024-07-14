@@ -11,7 +11,7 @@ locals {
 }
 
 resource "github_membership" "general" {
-  for_each = toset([ for member in local.members: member if !contains(var.unmanagable_members, member)])
+  for_each = toset([for member in local.members : member if !contains(var.unmanagable_members, member)])
   username = each.key
   role     = contains(var.admins, each.key) ? "admin" : "member"
 }

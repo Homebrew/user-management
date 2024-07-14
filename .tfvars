@@ -102,7 +102,7 @@ teams = {
       "timsutton",
       "woodruffw",
     ],
-    formulae-web = [
+    formulae_brew_sh = [
       "EricFromCanada",
       "MikeMcQuaid",
       "Rylan12",
@@ -130,10 +130,10 @@ teams = {
       "jacobbednarz",
       "MikeMcQuaid",
     ],
-    linux-fonts = [
+    homebrew-linux-fonts = [
       "tani",
     ],
-    pip = [
+    brew-pip-audit = [
     "alex",
     "woodruffw",
     ],

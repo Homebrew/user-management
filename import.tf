@@ -33,3 +33,21 @@ import {
   to       = module.github.github_membership.general[each.key]
   id       = "Homebrew:${each.key}"
 }
+
+import {
+  for_each = { for team in keys(var.teams) : team => team if !contains(["bots", "taps"], team) }
+  to       = module.github.github_team.main[each.key]
+  id       = each.key
+}
+
+import {
+  for_each = { for team in keys(var.teams.taps) : team => team }
+  to       = module.github.github_team.taps[each.key]
+  id       = replace(each.key, "_", "-")
+}
+
+import {
+  for_each = { for team in keys(var.teams.maintainers) : team => team }
+  to       = module.github.github_team.maintainers[each.key]
+  id       = replace(each.key, "_", "-")
+}
