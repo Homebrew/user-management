@@ -1,6 +1,6 @@
-# terraform-user-management
+# homebrew-user-management
 
-User management for the Homebrew organisation using Terraform
+User management for the Homebrew organisation using OpenTofu
 
 ## Requirements
 
@@ -18,3 +18,4 @@ User management for the Homebrew organisation using Terraform
 
 - Google workspace management for brew.sh
 - Google Cloud manangement for self-hosted workers
+- Add DNSSimple

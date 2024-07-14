@@ -6,6 +6,15 @@ terraform {
   }
 }
 
+terraform {
+  required_providers {
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.0"
+    }
+  }
+}
+
 locals {
   # these people can't have their membership managed by OpenTofu becuase they are Billing Managers in GitHub
   unmanagable_members = ["p-linnane", "issyl0", "colindean", "MikeMcQuaid", "BrewSponsorsBot"]
