@@ -31,6 +31,20 @@ module "github" {
   unmanagable_members = local.unmanagable_members
 }
 
+locals {
+  emails = nonsensitive({ for username, email in module.github.member_emails : username => lookup(var.email_overrides, username, email) })
+}
+
+module "aws" {
+  source = "./aws"
+  teams = {
+    Ops       = { for username in var.teams.maintainers.ops : username => local.emails[username] if lookup(local.emails, username, "") != "" }
+    Security  = { for username in var.teams.security : username => local.emails[username] if lookup(local.emails, username, "") != "" }
+    PLC       = { for username in var.teams.plc : username => local.emails[username] if lookup(local.emails, username, "") != "" }
+    Analytics = { for username in var.teams.maintainers.analytics : username => local.emails[username] if lookup(local.emails, username, "") != "" }
+  }
+}
+
 module "google-cloud" {
   source = "./google-cloud"
   ops    = module.github.ops

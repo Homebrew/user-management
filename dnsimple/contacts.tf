@@ -4,12 +4,12 @@ resource "dnsimple_contact" "ocf" {
   last_name  = "Maintainers"
   email      = "ops@brew.sh"
 
-  phone          = "+1 555 1234"
-  address1       = "123 Homebrew Street"
-  city           = "Homebrew"
-  state_province = "HB"
-  postal_code    = "00001"
-  country        = "United States"
+  phone            = sensitive("+1 555 1234")
+  address1         = sensitive("123 Homebrew Street")
+  city             = sensitive("Homebrew")
+  state_province   = sensitive("HB")
+  postal_code      = sensitive("00001")
+  country          = "US"
 
   lifecycle {
     ignore_changes = [address1, city, state_province, postal_code, phone]
