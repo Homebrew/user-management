@@ -16,7 +16,7 @@ terraform {
 }
 
 locals {
-  # these people can't have their membership managed by OpenTofu becuase they are Billing Managers in GitHub
+  # these people can't have their membership managed by OpenTofu because they are Billing Managers in GitHub
   unmanagable_members = ["p-linnane", "issyl0", "colindean", "MikeMcQuaid", "BrewSponsorsBot"]
 }
 

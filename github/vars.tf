@@ -12,6 +12,7 @@ variable "teams" {
       ops              = list(string)
       formulae_brew_sh = list(string)
       ci-orchestrator  = list(string)
+      analytics        = list(string)
     })
     taps = object({
       bundle               = list(string)
