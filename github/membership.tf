@@ -21,7 +21,7 @@ data "github_organization" "homebrew" {
 }
 
 locals {
-  member_emails = tomap({ for key, value in data.github_organization.homebrew.users : key => value.email })
+  member_emails = tomap({ for key, value in data.github_organization.homebrew.users : value.login => sensitive(value.email) })
 }
 
 output "member_emails" {

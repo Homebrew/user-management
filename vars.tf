@@ -12,6 +12,7 @@ variable "teams" {
       ops              = list(string)
       formulae_brew_sh = list(string)
       ci-orchestrator  = list(string)
+      analytics        = list(string)
     })
     taps = object({
       bundle               = list(string)
@@ -27,6 +28,7 @@ variable "github_admins" {
 }
 
 variable "email_overrides" {
-  type    = map(string)
-  default = {}
+  type      = map(string)
+  sensitive = true
+  default   = {}
 }

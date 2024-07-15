@@ -46,7 +46,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TF_GH_TOKEN }}
           DNSIMPLE_ACCOUNT: ${{ secrets.TF_DNSIMPLE_ACCOUNT }}
           DNSIMPLE_TOKEN: ${{ secrets.TF_DNSIMPLE_TOKEN }}
-        run: tofu plan -no-color -var-file .tfvars -detailed-exitcode
+        run: |
+          tofu plan -no-color -detailed-exitcode \
+                    -var-file .tfvars \
+                    -var='email_overrides=${{ secrets.email_overrides }}'
 
   trivy:
     name: Trivy

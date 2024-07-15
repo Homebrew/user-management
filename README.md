@@ -14,6 +14,16 @@ User management for the Homebrew organisation using OpenTofu
 - `tofu init`
 - `tofu plan -var-file .tfvars`
 
+### Secrets
+
+CI requires the following secrets:
+
+- `amazon_role`: The ARN of the AWS role to use for OIDC auth.
+- `email_overrides`: Map of GitHub usernames with emails for people who want a different email for tools from their GH email
+- `TF_GH_TOKEN`: GitHub token with permissions to manage org teams, users and repo permissions
+- `TF_DNSIMPLE_ACCOUNT`: Account ID for DNSimple
+- `TF_DNSIMPLE_TOKEN`: Token to authenticate to DNSimple
+
 ## TODO
 
 - Google workspace management for brew.sh

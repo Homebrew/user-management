@@ -115,6 +115,7 @@ teams = {
       "fxcoudert",
       "nandahkrishna",
       "p-linnane",
+      "SMillerDev"
     ],
     tsc = [
       "Bo98",
@@ -123,6 +124,11 @@ teams = {
       "fxcoudert",
       "iMichka",
     ],
+    analytics = [
+      "SMillerDev",
+      "Bo98",
+      "MikeMcQuaid",
+    ]
   },
   taps = {
     bundle = [
