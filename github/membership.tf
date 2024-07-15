@@ -16,6 +16,48 @@ resource "github_membership" "general" {
   role     = contains(var.admins, each.key) ? "admin" : "member"
 }
 
+resource "github_team_repository" "brew" {
+  team_id    = github_team.maintainers["brew"].id
+  repository = "brew"
+  permission = "maintain"
+}
+
+resource "github_team_repository" "cask" {
+  team_id    = github_team.maintainers["cask"].id
+  repository = "homebrew-cask"
+  permission = "maintain"
+}
+
+resource "github_team_repository" "core" {
+  team_id    = github_team.maintainers["core"].id
+  repository = "homebrew-core"
+  permission = "maintain"
+}
+
+resource "github_team_repository" "formulae-brew-sh" {
+  team_id = github_team.maintainers["formulae_brew_sh"].id
+  repository = "formulae.brew.sh"
+  permission = "maintain"
+}
+
+resource "github_team_repository" "ci-orchestrator" {
+  team_id    = github_team.maintainers["ci-orchestrator"].id
+  repository = "ci-orchestrator"
+  permission = "write"
+}
+
+resource "github_team_repository" "ops" {
+  team_id    = github_team.maintainers["ops"].id
+  repository = "ops"
+  permission = "maintain"
+}
+
+resource "github_team_repository" "actions" {
+  team_id    = github_team.maintainers["ops"].id
+  repository = "actions"
+  permission = "maintain"
+}
+
 data "github_organization" "homebrew" {
   name = "Homebrew"
 }

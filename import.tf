@@ -53,6 +53,41 @@ import {
 }
 
 import {
+  to = module.github.github_team_repository.brew
+  id = "brew:brew"
+}
+
+import {
+  to = module.github.github_team_repository.cask
+  id = "cask:homebrew-cask"
+}
+
+import {
+  to = module.github.github_team_repository.core
+  id = "core:homebrew-core"
+}
+
+import {
+  to = module.github.github_team_repository.formulae-brew-sh
+  id = "formulae-brew-sh:formulae-brew-sh"
+}
+
+import {
+  to = module.github.github_team_repository.ops
+  id = "ops:ops"
+}
+
+import {
+  to = module.github.github_team_repository.actions
+  id = "ops:actions"
+}
+
+import {
+  to = module.github.github_team_repository.ci-orchestrator
+  id = "ci-orchestrator:ci-orchestrator"
+}
+
+import {
   to = module.dnsimple.dnsimple_contact.ocf
   id = 52414
 }
