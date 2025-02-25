@@ -43,7 +43,9 @@ jobs:
 
       - name: OpenTofu Plan
         env:
-          GITHUB_TOKEN: ${{ secrets.TF_GH_TOKEN }}
+          GITHUB_APP_ID: ${{ secrets.TF_GH_APP }}
+          GITHUB_APP_INSTALLATION_ID: ${{ secrets.TF_GH_APP_INSTALL }}
+          GITHUB_APP_PEM_FILE: ${{ secrets.TF_GH_APP_PEM }}
           DNSIMPLE_ACCOUNT: ${{ secrets.TF_DNSIMPLE_ACCOUNT }}
           DNSIMPLE_TOKEN: ${{ secrets.TF_DNSIMPLE_TOKEN }}
         run: |

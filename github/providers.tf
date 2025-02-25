@@ -10,4 +10,5 @@ terraform {
 # Configure the GitHub Provider
 provider "github" {
   owner = "Homebrew"
+  app_auth {}
 }
