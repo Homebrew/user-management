@@ -1,5 +1,10 @@
 data "aws_iam_policy_document" "codebuild_policy_document" {
   statement {
+    actions   = ["logs:*"]
+    resources = ["arn:aws:logs:*:*:*"]
+    effect    = "Allow"
+  }
+  statement {
     actions = [
       "s3:List*",
       "s3:Get*",

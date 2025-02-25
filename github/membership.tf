@@ -1,11 +1,7 @@
 locals {
   members = concat(
     var.teams.bots,
-    var.teams.plc,
-    var.teams.security,
-    var.teams.security,
-    flatten(values(tomap(var.teams.maintainers))),
-    flatten(values(tomap(var.teams.taps)))
+    flatten(values(tomap(var.teams.maintainers)))
   )
 }
 
@@ -28,7 +24,7 @@ output "member_emails" {
 }
 
 output "ops" {
-  value = { for username in var.teams.maintainers.ops : username => local.member_emails[username] if lookup(local.member_emails, username, null) != null }
+  value = { for username in var.teams.ops : username => local.member_emails[username] if lookup(local.member_emails, username, null) != null }
 }
 
 output "tsc" {

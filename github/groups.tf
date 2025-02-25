@@ -1,8 +1,7 @@
 locals {
   teams = concat(
-    [for team in keys(var.teams) : team if !contains(["bots", "taps", "plc"], team)],
-    keys(tomap(var.teams.maintainers)),
-    keys(tomap(var.teams.taps))
+    [for team in keys(var.teams) : team if !contains(["bots", "plc"], team)],
+    keys(tomap(var.teams.maintainers))
   )
 }
 
@@ -10,7 +9,7 @@ resource "github_team" "main" {
   name    = each.key
   privacy = "closed"
 
-  for_each = { for team in keys(var.teams) : team => team if !contains(["bots", "taps", "plc"], team) }
+  for_each = { for team in keys(var.teams) : team => team if !contains(["bots", "ops", "plc", "security"], team) }
 
   lifecycle {
     ignore_changes = [description]
@@ -22,37 +21,19 @@ resource "github_team" "maintainers" {
   privacy        = "closed"
   parent_team_id = github_team.main["maintainers"].id
 
-  for_each = { for team in keys(var.teams.maintainers) : team => team }
+  for_each = { for team in keys(var.teams.maintainers) : team => team if !contains(["other"], team) }
 
   lifecycle {
     ignore_changes = [description]
   }
 }
 
-resource "github_team" "taps" {
-  name    = replace(each.key, "_", ".")
-  privacy = "closed"
-
-  for_each = { for team in keys(var.teams.taps) : team => team }
-
-  lifecycle {
-    ignore_changes = [description]
-  }
-}
-
-resource "github_team_membership" "ops_membership" {
-  for_each = toset(var.teams.maintainers.ops)
-  team_id  = github_team.maintainers["ops"].id
+resource "github_team_membership" "maintainer_membership" {
+  for_each = toset(var.teams.maintainers.other)
+  team_id  = github_team.main["maintainers"].id
   username = each.key
   role     = contains(var.admins, each.key) ? "maintainer" : "member"
 }
-
-# resource "github_team_membership" "plc_membership" {
-  # for_each = toset(var.teams.plc)
-  # team_id  = github_team.main["plc"].id
-  # username = each.key
-  # role     = contains(var.admins, each.key) ? "maintainer" : "member"
-# }
 
 resource "github_team_membership" "tsc_membership" {
   for_each = toset(var.teams.maintainers.tsc)

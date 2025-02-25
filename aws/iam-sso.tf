@@ -7,7 +7,7 @@ resource "aws_identitystore_group" "group" {
 }
 
 resource "aws_identitystore_user" "main" {
-  for_each          = merge(nonsensitive(var.teams.PLC), nonsensitive(var.teams.Ops), nonsensitive(var.teams.Security), nonsensitive(var.teams.Analytics))
+  for_each          = merge(nonsensitive(var.teams.PLC), nonsensitive(var.teams.Ops), nonsensitive(var.teams.Security))
   identity_store_id = tolist(data.aws_ssoadmin_instances.main.identity_store_ids)[0]
 
   display_name = each.key

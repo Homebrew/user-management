@@ -17,7 +17,7 @@ terraform {
 
 locals {
   # these people can't have their membership managed by OpenTofu because they are Billing Managers in GitHub
-  unmanagable_members = ["p-linnane", "issyl0", "colindean", "MikeMcQuaid", "BrewSponsorsBot"]
+  unmanagable_members = ["p-linnane", "colindean", "MikeMcQuaid", "BrewSponsorsBot"]
 }
 
 module "dnsimple" {
@@ -38,10 +38,9 @@ locals {
 module "aws" {
   source = "./aws"
   teams = {
-    Ops       = { for username in var.teams.maintainers.ops : username => local.emails[username] if lookup(local.emails, username, "") != "" }
-    Security  = { for username in var.teams.security : username => local.emails[username] if lookup(local.emails, username, "") != "" }
-    PLC       = { for username in var.teams.plc : username => local.emails[username] if lookup(local.emails, username, "") != "" }
-    Analytics = { for username in var.teams.maintainers.analytics : username => local.emails[username] if lookup(local.emails, username, "") != "" }
+    Ops      = { for username in var.teams.ops : username => local.emails[username] if lookup(local.emails, username, "") != "" }
+    Security = { for username in var.teams.security : username => local.emails[username] if lookup(local.emails, username, "") != "" }
+    PLC      = { for username in var.teams.plc : username => local.emails[username] if lookup(local.emails, username, "") != "" }
   }
 }
 
