@@ -5,19 +5,16 @@ import {
 }
 
 import {
-  for_each = toset(var.teams.maintainers.ops)
-  to       = module.github.github_team_membership.ops_membership[each.key]
-  id       = "3769017:${each.key}"
+  for_each = toset(var.teams.maintainers.other)
+  to       = module.github.github_team_membership.maintainer_membership[each.key]
+  id       = "152937:${each.key}"
 }
 
 locals {
   members = concat(
     var.teams.bots,
-    var.teams.plc,
     var.teams.security,
-    var.teams.security,
-    flatten(values(tomap(var.teams.maintainers))),
-    flatten(values(tomap(var.teams.taps)))
+    flatten(values(tomap(var.teams.maintainers)))
   )
 }
 
@@ -28,19 +25,13 @@ import {
 }
 
 import {
-  for_each = { for team in keys(var.teams) : team => team if !contains(["bots", "taps", "plc"], team) }
+  for_each = { for team in keys(var.teams) : team => team if !contains(["bots", "plc", "security", "ops"], team) }
   to       = module.github.github_team.main[each.key]
   id       = each.key
 }
 
 import {
-  for_each = { for team in keys(var.teams.taps) : team => team }
-  to       = module.github.github_team.taps[each.key]
-  id       = replace(each.key, "_", "-")
-}
-
-import {
-  for_each = { for team in keys(var.teams.maintainers) : team => team }
+  for_each = { for team in keys(var.teams.maintainers) : team => team if !contains(["other"], team) }
   to       = module.github.github_team.maintainers[each.key]
   id       = replace(each.key, "_", "-")
 }
