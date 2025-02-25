@@ -1,9 +1,3 @@
-# import {
-  # for_each = toset(var.teams.plc)
-  # to       = module.github.github_team_membership.plc_membership[each.key]
-  # id       = "3120238:${each.key}"
-# }
-
 import {
   for_each = toset(var.teams.maintainers.tsc)
   to       = module.github.github_team_membership.tsc_membership[each.key]
