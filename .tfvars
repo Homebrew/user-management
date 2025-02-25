@@ -1,21 +1,4 @@
 teams = {
-  members = [
-    "DomT4",
-    "danielnachun",
-    "dawidd6",
-    "gromgit",
-    "johndbritton",
-    "lembacon",
-    "maxim-belkin",
-    "mistydemeo",
-    "scpeters",
-    "singingwolfboy",
-    "sjackman",
-    "victorpopkov",
-    "vitorgalvao",
-    "whoiswillma",
-    "xu-cheng",
-  ],
   plc = [
     "MikeMcQuaid",
     "colindean",
@@ -140,8 +123,8 @@ teams = {
       "tani",
     ],
     brew-pip-audit = [
-    "alex",
-    "woodruffw",
+      "alex",
+      "woodruffw",
     ],
     services = [
       "SMillerDev",

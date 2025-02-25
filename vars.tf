@@ -3,7 +3,6 @@ variable "teams" {
     plc      = list(string)
     security = list(string)
     bots     = list(string)
-    members  = list(string)
     maintainers = object({
       cask             = list(string)
       brew             = list(string)

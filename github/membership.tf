@@ -4,7 +4,6 @@ locals {
     var.teams.plc,
     var.teams.security,
     var.teams.security,
-    var.teams.members,
     flatten(values(tomap(var.teams.maintainers))),
     flatten(values(tomap(var.teams.taps)))
   )
