@@ -66,24 +66,13 @@ jobs:
         uses: aquasecurity/trivy-action@18f2510ee396bbf400402947b394f2dd8c87dbb0 # v0.29.0
         with:
           scan-type: config
-          format: table
+          format: sarif
+          output: trivy-results.sarif
           hide-progress: true
-          ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
-          output: trivy.txt
           exit-code: '1'
 
-      - name: Publish Trivy Output to Summary
-        if: always()
-        run: |
-          if [[ -s trivy.txt ]]; then
-            {
-              echo "### Security Output"
-              echo "<details><summary>Click to expand</summary>"
-              echo ""
-              echo '```terraform'
-              cat trivy.txt
-              echo '```'
-              echo "</details>"
-            } >> $GITHUB_STEP_SUMMARY
-          fi
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
