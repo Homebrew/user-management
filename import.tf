@@ -22,7 +22,6 @@ locals {
     var.teams.plc,
     var.teams.security,
     var.teams.security,
-    var.teams.members,
     flatten(values(tomap(var.teams.maintainers))),
     flatten(values(tomap(var.teams.taps)))
   )
@@ -35,7 +34,7 @@ import {
 }
 
 import {
-  for_each = { for team in keys(var.teams) : team => team if !contains(["bots", "taps"], team) }
+  for_each = { for team in keys(var.teams) : team => team if !contains(["bots", "taps", "plc"], team) }
   to       = module.github.github_team.main[each.key]
   id       = each.key
 }
