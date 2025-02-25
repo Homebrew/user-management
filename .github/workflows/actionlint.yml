@@ -35,21 +35,14 @@ jobs:
         id: setup-homebrew
         uses: Homebrew/actions/setup-homebrew@master
         with:
-          core: true
+          core: false
           cask: false
           test-bot: false
 
       - name: Install tools
         run: brew install actionlint shellcheck zizmor
 
-      - name: Set up GITHUB_WORKSPACE
-        env:
-          HOMEBREW_TAP_REPOSITORY: ${{ steps.setup-homebrew.outputs.repository-path }}
-        run: |
-          # Annotations work only relative to GITHUB_WORKSPACE
-          (shopt -s dotglob; rm -rf "${GITHUB_WORKSPACE:?}"/*; mv "${HOMEBREW_TAP_REPOSITORY:?}"/* "$GITHUB_WORKSPACE")
-          rmdir "$HOMEBREW_TAP_REPOSITORY"
-          ln -vs "$GITHUB_WORKSPACE" "$HOMEBREW_TAP_REPOSITORY"
+      - uses: actions/checkout@v4
 
       - run: zizmor --format sarif . > results.sarif
 
