@@ -22,7 +22,7 @@ teams = {
     "BrewSponsorsBot",
   ],
   maintainers = {
-    other = [
+    brew = [
       "apainintheneck",
       "dduugg"
     ]

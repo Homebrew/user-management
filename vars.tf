@@ -5,7 +5,7 @@ variable "teams" {
     ops      = list(string)
     bots     = list(string)
     maintainers = object({
-      other = list(string)
+      brew = list(string)
       cask  = list(string)
       core  = list(string)
       tsc   = list(string)

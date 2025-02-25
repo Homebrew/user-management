@@ -5,7 +5,7 @@ import {
 }
 
 import {
-  for_each = toset(var.teams.maintainers.other)
+  for_each = toset(var.teams.maintainers.brew)
   to       = module.github.github_team_membership.maintainer_membership[each.key]
   id       = "152937:${each.key}"
 }
@@ -31,7 +31,7 @@ import {
 }
 
 import {
-  for_each = { for team in keys(var.teams.maintainers) : team => team if !contains(["other"], team) }
+  for_each = { for team in keys(var.teams.maintainers) : team => team if !contains(["brew"], team) }
   to       = module.github.github_team.maintainers[each.key]
   id       = replace(each.key, "_", "-")
 }
