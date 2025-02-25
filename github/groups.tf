@@ -1,6 +1,6 @@
 locals {
   teams = concat(
-    [for team in keys(var.teams) : team if !contains(["bots", "taps"], team)],
+    [for team in keys(var.teams) : team if !contains(["bots", "taps", "plc"], team)],
     keys(tomap(var.teams.maintainers)),
     keys(tomap(var.teams.taps))
   )
@@ -10,7 +10,7 @@ resource "github_team" "main" {
   name    = each.key
   privacy = "closed"
 
-  for_each = { for team in keys(var.teams) : team => team if !contains(["bots", "taps"], team) }
+  for_each = { for team in keys(var.teams) : team => team if !contains(["bots", "taps", "plc"], team) }
 
   lifecycle {
     ignore_changes = [description]
@@ -47,12 +47,12 @@ resource "github_team_membership" "ops_membership" {
   role     = contains(var.admins, each.key) ? "maintainer" : "member"
 }
 
-resource "github_team_membership" "plc_membership" {
-  for_each = toset(var.teams.plc)
-  team_id  = github_team.main["plc"].id
-  username = each.key
-  role     = contains(var.admins, each.key) ? "maintainer" : "member"
-}
+# resource "github_team_membership" "plc_membership" {
+  # for_each = toset(var.teams.plc)
+  # team_id  = github_team.main["plc"].id
+  # username = each.key
+  # role     = contains(var.admins, each.key) ? "maintainer" : "member"
+# }
 
 resource "github_team_membership" "tsc_membership" {
   for_each = toset(var.teams.maintainers.tsc)

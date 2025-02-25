@@ -1,4 +1,11 @@
 teams = {
+  plc = [
+    "MikeMcQuaid",
+    "colindean",
+    "issyl0",
+    "mozzadrella",
+    "p-linnane",
+  ],
   security = [
     "MikeMcQuaid",
     "p-linnane",
