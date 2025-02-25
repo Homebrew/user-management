@@ -52,14 +52,6 @@ resource "aws_identitystore_group_membership" "security" {
   member_id         = aws_identitystore_user.main[each.key].user_id
 }
 
-resource "aws_identitystore_group_membership" "analytics" {
-  for_each = nonsensitive(var.teams.Analytics)
-
-  identity_store_id = tolist(data.aws_ssoadmin_instances.main.identity_store_ids)[0]
-  group_id          = aws_identitystore_group.group["Analytics"].group_id
-  member_id         = aws_identitystore_user.main[each.key].user_id
-}
-
 resource "aws_ssoadmin_permission_set" "OpsAccess" {
   name         = "OpsAccess"
   description  = "Access for Ops"
