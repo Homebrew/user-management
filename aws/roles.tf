@@ -55,6 +55,21 @@ resource "aws_iam_role" "github_tf" {
           Federated = aws_iam_openid_connect_provider.github_actions.arn
         }
       },
+      {
+        Action = "sts:AssumeRoleWithWebIdentity"
+        Effect = "Allow"
+        Condition = {
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+          }
+          StringLike = {
+            "token.actions.githubusercontent.com:sub" = "repo:Homebrew/private:*"
+          }
+        }
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.github_actions.arn
+        }
+      }
     ]
     Version = "2012-10-17"
   })
@@ -62,5 +77,6 @@ resource "aws_iam_role" "github_tf" {
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
     "arn:aws:iam::aws:policy/AWSSSOReadOnly",
     "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
+    aws_iam_policy.policy.arn
   ]
 }
