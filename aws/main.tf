@@ -1,5 +1,11 @@
 provider "aws" {
   region = "us-east-1"
+
+  default_tags {
+    tags = {
+      Origin = "Created by Terraform"
+    }
+  }
 }
 
 resource "aws_iam_openid_connect_provider" "github_actions" {
