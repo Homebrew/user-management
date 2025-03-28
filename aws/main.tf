@@ -3,7 +3,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Origin = "Created by Terraform"
+      Origin = "Created by OpenTofu"
     }
   }
 }
