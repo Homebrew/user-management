@@ -10,7 +10,11 @@ data "aws_iam_policy_document" "codebuild_policy_document" {
       "s3:Get*",
       "s3:Put*",
       "s3:DeleteObject",
-      "s3:DeleteObjectVersion"
+      "s3:DeleteObjectVersion",
+      "ecs:*",
+      "ecr:*",
+      "apigateway:*",
+      "elasticloadbalancing:*"
     ]
     resources = [
       "arn:aws:s3:::homebrew-terraform-state/*",
@@ -27,7 +31,7 @@ data "aws_iam_policy_document" "codebuild_policy_document" {
   }
 }
 
-resource "aws_iam_policy" "policy" {
+resource "aws_iam_policy" "opentofu_policy" {
   name        = "OpentofuPolicy"
   path        = "/"
   description = "Policy to allow Opentofu to do it's thing"
@@ -36,8 +40,8 @@ resource "aws_iam_policy" "policy" {
 }
 
 resource "aws_iam_role" "github_tf" {
-  name        = "GitHubActionsS3Role"
-  description = "Allow GitHub actions access to S3 to store TF state"
+  name        = "GitHubActionsRole"
+  description = "Allow GitHub actions access"
   assume_role_policy = jsonencode({
     Statement = [
       {
@@ -77,6 +81,6 @@ resource "aws_iam_role" "github_tf" {
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
     "arn:aws:iam::aws:policy/AWSSSOReadOnly",
     "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
-    aws_iam_policy.policy.arn
+    aws_iam_policy.opentofu_policy.arn
   ]
 }
