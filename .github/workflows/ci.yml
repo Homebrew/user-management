@@ -10,8 +10,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  opentofu:
-    name: OpenTofu
+  opentofu-plan-pull-request:
+    name: OpenTofu Plan Pull Request
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -20,6 +21,8 @@ jobs:
       TFC_AWS_RUN_ROLE_ARN: ${{ secrets.amazon_role }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
 
       - uses: opentofu/setup-opentofu@592200bd4b9bbf4772ace78f887668b1aee8f716 # v1.0.5
 
@@ -59,6 +62,89 @@ jobs:
                     -var-file .tfvars \
                     -var='email_overrides=${{ secrets.email_overrides }}'
 
+  opentofu-plan:
+    name: OpenTofu Plan
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TFC_AWS_RUN_ROLE_ARN: ${{ secrets.amazon_role }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - uses: opentofu/setup-opentofu@592200bd4b9bbf4772ace78f887668b1aee8f716 # v1.0.5
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722 # v4.1.0
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.amazon_role }}
+
+      - name: OpenTofu Init
+        id: init
+        run: tofu init
+
+      - name: OpenTofu Plan
+        env:
+          GITHUB_APP_ID: ${{ secrets.TF_GH_APP }}
+          GITHUB_APP_INSTALLATION_ID: ${{ secrets.TF_GH_APP_INSTALL }}
+          GITHUB_APP_PEM_FILE: ${{ secrets.TF_GH_APP_PEM }}
+          DNSIMPLE_ACCOUNT: ${{ secrets.TF_DNSIMPLE_ACCOUNT }}
+          DNSIMPLE_TOKEN: ${{ secrets.TF_DNSIMPLE_TOKEN }}
+        run: |
+          tofu plan -no-color -detailed-exitcode \
+                    -var-file .tfvars \
+                    -var='email_overrides=${{ secrets.email_overrides }}' \
+                    -out=tfplan
+
+      - name: Upload Plan Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: tfplan
+
+
+  opentofu-apply:
+    name: OpenTofu Apply
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: 'production'
+    needs: 'opentofu-plan'
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TFC_AWS_RUN_ROLE_ARN: ${{ secrets.amazon_role }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - uses: opentofu/setup-opentofu@592200bd4b9bbf4772ace78f887668b1aee8f716 # v1.0.5
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722 # v4.1.0
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.amazon_role }}
+
+      - name: OpenTofu Init
+        id: init
+        run: tofu init
+
+      - name: Download Plan Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan
+
+      - name: OpenTofu Apply
+        run: |
+          tofu apply -no-color "tfplan"
+
   trivy:
     name: Trivy
     runs-on: ubuntu-latest
@@ -69,6 +155,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+            persist-credentials: false
 
       - name: Run Trivy vulnerability scanner in IaC mode
         uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # v0.30.0
