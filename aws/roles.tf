@@ -14,7 +14,11 @@ data "aws_iam_policy_document" "codebuild_policy_document" {
       "ecs:*",
       "ecr:*",
       "apigateway:*",
-      "elasticloadbalancing:*"
+      "elasticloadbalancing:*",
+      "iam:DeleteGroupMembership",
+      "iam:DetachRolePolicy",
+      "iam:DeletePolicy",
+      "sso:TagResource"
     ]
     resources = [
       "arn:aws:s3:::homebrew-terraform-state/*",
