@@ -17,8 +17,7 @@ data "aws_iam_policy_document" "codebuild_policy_document" {
       "elasticloadbalancing:*",
       "iam:DeleteGroupMembership",
       "iam:DetachRolePolicy",
-      "iam:DeletePolicy",
-      "sso:TagResource"
+      "iam:DeletePolicy"
     ]
     resources = [
       "arn:aws:s3:::homebrew-terraform-state/*",
@@ -30,6 +29,7 @@ data "aws_iam_policy_document" "codebuild_policy_document" {
     effect = "Allow"
     actions = [
       "iam:*",
+      "sso:TagResource"
     ]
     resources = ["*"]
   }
