@@ -11,13 +11,6 @@ data "aws_iam_policy_document" "codebuild_policy_document" {
       "s3:Put*",
       "s3:DeleteObject",
       "s3:DeleteObjectVersion",
-      "ecs:*",
-      "ecr:*",
-      "apigateway:*",
-      "elasticloadbalancing:*",
-      "iam:DeleteGroupMembership",
-      "iam:DetachRolePolicy",
-      "iam:DeletePolicy"
     ]
     resources = [
       "arn:aws:s3:::homebrew-terraform-state/*",
@@ -29,7 +22,12 @@ data "aws_iam_policy_document" "codebuild_policy_document" {
     effect = "Allow"
     actions = [
       "iam:*",
-      "sso:TagResource"
+      "sso:TagResource",
+      "ecs:*",
+      "ecr:*",
+      "apigateway:*",
+      "elasticloadbalancing:*",
+      "identitystore:*"
     ]
     resources = ["*"]
   }
