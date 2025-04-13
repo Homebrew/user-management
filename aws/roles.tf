@@ -34,9 +34,9 @@ data "aws_iam_policy_document" "codebuild_policy_document" {
 }
 
 resource "aws_iam_policy" "opentofu_policy" {
-  name        = "OpentofuPolicy"
+  name        = "OpentofuApplyPolicy"
   path        = "/"
-  description = "Policy to allow Opentofu to do it's thing"
+  description = "Policy to allow Opentofu to apply infrastructure changes"
 
   policy = data.aws_iam_policy_document.codebuild_policy_document.json
 }
@@ -80,9 +80,7 @@ resource "aws_iam_role" "github_tf" {
     Version = "2012-10-17"
   })
   managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-    "arn:aws:iam::aws:policy/AWSSSOReadOnly",
-    "arn:aws:iam::aws:policy/IAMReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AdministratorAccess",
     aws_iam_policy.opentofu_policy.arn
   ]
 }
