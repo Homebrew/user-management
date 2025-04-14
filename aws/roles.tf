@@ -79,8 +79,14 @@ resource "aws_iam_role" "github_tf" {
     ]
     Version = "2012-10-17"
   })
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AdministratorAccess",
-    aws_iam_policy.opentofu_policy.arn
-  ]
+}
+
+resource "aws_iam_role_policy_attachment" "github_tf_opentofu_policy_attachment" {
+  role       = aws_iam_role.github_tf.name
+  policy_arn = aws_iam_policy.opentofu_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "github_tf_administrator_policy_attachment" {
+  role       = aws_iam_role.github_tf.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
