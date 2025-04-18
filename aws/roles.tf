@@ -23,7 +23,8 @@ data "aws_iam_policy_document" "codebuild_policy_document" {
     actions = [
       "iam:*",
       "sso:TagResource",
-      "sso:ListInstances",
+      "sso:Describe*",
+      "sso:List*",
       "ecs:*",
       "ecr:*",
       "apigateway:*",
