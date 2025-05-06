@@ -169,6 +169,7 @@ jobs:
         with:
           scan-type: config
           format: sarif
+          tf-vars: .tfvars
           output: trivy-results.sarif
           hide-progress: true
           severity: 'CRITICAL,HIGH'
