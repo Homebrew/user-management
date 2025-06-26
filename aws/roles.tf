@@ -29,7 +29,10 @@ data "aws_iam_policy_document" "codebuild_policy_document" {
       "ecr:*",
       "apigateway:*",
       "elasticloadbalancing:*",
-      "identitystore:*"
+      "identitystore:*",
+      "kms:*",
+      "ec2:*",
+      "cloudwatch:*"
     ]
     resources = ["*"]
   }
