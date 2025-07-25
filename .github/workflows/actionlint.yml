@@ -1,14 +1,12 @@
-name: actionlint
+# This file is synced from the `.github` repository, do not modify it directly.
+name: Actionlint
 
 on:
   push:
     branches:
       - main
-    paths:
-      - '.github/workflows/*.ya?ml'
+      - master
   pull_request:
-    paths:
-      - '.github/workflows/*.ya?ml'
 
 defaults:
   run:
@@ -25,15 +23,18 @@ env:
 
 permissions: {}
 
-# FIXME: The `Install tools` step fails inside the Docker container for some reason.
 jobs:
   workflow_syntax:
     if: github.repository_owner == 'Homebrew'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    container:
+      image: ghcr.io/homebrew/ubuntu22.04:main
     steps:
       - name: Set up Homebrew
         id: setup-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@main
         with:
           core: false
           cask: false
@@ -47,26 +48,39 @@ jobs:
           persist-credentials: false
 
       - run: zizmor --format sarif . > results.sarif
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload SARIF file
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        # We can't use the SARIF file when triggered by `merge_group` so we don't upload it.
+        if: always() && github.event_name != 'merge_group'
         with:
           name: results.sarif
           path: results.sarif
 
       - name: Set up actionlint
         run: |
-          # Setting `shell: /bin/bash` prevents shellcheck from running on
-          # those steps, so let's change them to `shell: bash` for linting.
+          # In homebrew-core, setting `shell: /bin/bash` prevents shellcheck from running on
+          # those steps, so let's change them to `shell: bash` temporarily for better linting.
           sed -i 's|shell: /bin/bash -x|shell: bash -x|' .github/workflows/*.y*ml
-          # The JSON matcher needs to be accessible to the container host.
+
+          # In homebrew-core, the JSON matcher needs to be accessible to the container host.
           cp "$(brew --repository)/.github/actionlint-matcher.json" "$HOME"
+
           echo "::add-matcher::$HOME/actionlint-matcher.json"
 
       - run: actionlint
 
   upload_sarif:
     needs: workflow_syntax
+    # We want to always upload this even if `actionlint` failed.
+    # This is only available on public repositories.
+    if: >
+      always() &&
+      !contains(fromJSON('["cancelled", "skipped"]'), needs.workflow_syntax.result) &&
+      !github.event.repository.private &&
+      github.event_name != 'merge_group'
     runs-on: ubuntu-latest
     permissions:
       contents: read
