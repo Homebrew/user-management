@@ -169,6 +169,7 @@ jobs:
         with:
           scan-type: config
           format: sarif
+          tf-vars: .tfvars
           output: trivy-results.sarif
           hide-progress: true
           severity: 'CRITICAL,HIGH'
@@ -176,6 +177,7 @@ jobs:
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: failure() || success()
         with:
           name: trivy-results.sarif
           path: trivy-results.sarif
