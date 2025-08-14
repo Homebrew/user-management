@@ -16,10 +16,6 @@ updates:
   - "*"
   allow:
   - dependency-type: all
-  cooldown:
-    default-days: 1
-    include:
-    - "*"
 - package-ecosystem: terraform
   directory: "/"
   multi-ecosystem-group: all
