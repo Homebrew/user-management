@@ -91,8 +91,6 @@ resource "aws_ssoadmin_managed_policy_attachment" "Billing" {
   permission_set_arn = aws_ssoadmin_permission_set.Billing.arn
 }
 
-data "aws_caller_identity" "current" {}
-
 resource "aws_ssoadmin_account_assignment" "billing" {
   instance_arn       = tolist(data.aws_ssoadmin_instances.main.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.Billing.arn
@@ -100,7 +98,7 @@ resource "aws_ssoadmin_account_assignment" "billing" {
   principal_id   = aws_identitystore_group.group["PLC"].group_id
   principal_type = "GROUP"
 
-  target_id   = data.aws_caller_identity.current.account_id
+  target_id   = local.account_id
   target_type = "AWS_ACCOUNT"
 }
 
@@ -111,7 +109,7 @@ resource "aws_ssoadmin_account_assignment" "security" {
   principal_id   = aws_identitystore_group.group["Security"].group_id
   principal_type = "GROUP"
 
-  target_id   = data.aws_caller_identity.current.account_id
+  target_id   = local.account_id
   target_type = "AWS_ACCOUNT"
 }
 
@@ -122,6 +120,6 @@ resource "aws_ssoadmin_account_assignment" "Ops" {
   principal_id   = aws_identitystore_group.group["Ops"].group_id
   principal_type = "GROUP"
 
-  target_id   = data.aws_caller_identity.current.account_id
+  target_id   = local.account_id
   target_type = "AWS_ACCOUNT"
 }
